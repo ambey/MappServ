@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+
+	<package name="customer" namespace="/customer" extends="json-default">
+		<action name="SignIn" class="com.extenprise.mapp.customer.action.SignInAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">customer</param>
+			</interceptor-ref>
+			<result type="json">
+				<param name="root">customer</param>
+			</result>
+		</action>
+		<action name="SignUp" class="com.extenprise.mapp.customer.action.SignUpAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">customer</param>
+			</interceptor-ref>
+			<result type="json">
+				<param name="root">customer</param>
+			</result>
+		</action>
+		<action name="PhoneExistsCheck"
+			class="com.extenprise.mapp.customer.action.PhoneExistsCheckAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">customer</param>
+			</interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">customer</param>
+			</result>
+			<result name="error" type="json">
+				<param name="errorCode">404</param>
+			</result>
+		</action>
+	</package>
+	<package name="service" namespace="/service" extends="json-default">
+		<action name="SignIn" class="com.extenprise.mapp.service.action.SignInAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">serviceProvider</param>
+			</interceptor-ref>
+			<result type="json">
+				<param name="root">serviceProvider</param>
+			</result>
+		</action>
+		<action name="SignUp" class="com.extenprise.mapp.service.action.SignUpAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">serviceProvider</param>
+			</interceptor-ref>
+			<result type="json">
+				<param name="root">serviceProvider</param>
+			</result>
+		</action>
+		<action name="PhoneExistsCheck"
+			class="com.extenprise.mapp.service.action.PhoneExistsCheckAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">serviceProvider</param>
+			</interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">serviceProvider</param>
+			</result>
+			<result name="error" type="json">
+				<param name="errorCode">404</param>
+			</result>
+		</action>
+		<action name="Search"
+			class="com.extenprise.mapp.service.action.SearchAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">form</param>
+			</interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">list</param>
+			</result>
+			<result name="error" type="json">
+				<param name="errorCode">404</param>
+			</result>
+		</action>
+		<action name="GetDetails"
+			class="com.extenprise.mapp.service.action.DetailsAction"
+			method="execute">
+			<interceptor-ref name="json">
+				<param name="contentType">application/json</param>
+				<param name="root">form</param>
+			</interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">serviceProvider</param>
+			</result>
+			<result name="error" type="json">
+				<param name="errorCode">404</param>
+			</result>
+		</action>
+	</package>
+</struts>

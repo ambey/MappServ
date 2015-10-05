@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 2.4//EN"
+        "http://www.jboss.org/j2ee/dtd/jboss-web_4_0.dtd">
+<jboss-web>
+   <context-root>/mapp</context-root>
+	 <resource-ref>
+		 <res-ref-name>MappDS</res-ref-name>
+		 <jndi-name>java:MappDS</jndi-name>
+	 </resource-ref>
+</jboss-web>
