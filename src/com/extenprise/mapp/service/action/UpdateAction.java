@@ -50,4 +50,67 @@ public class SignUpAction {
         }
         return Action.SUCCESS;
     }
+
+    public String addWorkPlace() {
+        try {
+            DebugManager.doAudit(serviceProvider.toString());
+            ArrayList<ServProvHasServPt> services = serviceProvider
+                    .getServices();
+            QueryRunner run = DBManager.getQueryRunner();
+            ResultSetHandler<Integer> rsh = DBUtil
+                    .getResultSetHandler(Integer.class);
+            String query = "";
+
+            for (ServProvHasServPt s : services) {
+
+                run.batch("insert into Service values(?)", s.getService());
+
+                ServicePoint servPt = s.getServicePoint();
+
+                City city = servPt.getCity();
+                query = "select idCity from City where city=? and state=? and country=?";
+                int idCity = run.query(query, rsh, city.getCity(),
+                        city.getState(), city.getCountry());
+                city.setIdCity(idCity);
+                int idServPt = DBUtil.getServicePointId(servPt.getName(),
+                        servPt.getLocation(), servPt.getCity().getIdCity());
+                if(idServPt != -1) {
+                    servPt.setIdServicePoint(idServPt);
+                    continue;
+                }
+                query = "insert into ServicePoint (" + servPt.members()
+                        + ", idCity) " + "values("
+                        + DBUtil.getPlaceHolder(servPt.memberCount(), "?")
+                        + ",?)";
+                DebugManager.doAudit("Serv Prov addWorkPlace: query = " + query);
+                int id = run.insertBatch(
+                        query,
+                        rsh,
+                        new Object[][] { servPt.memberValues(""
+                                + servPt.getCity().getIdCity()) });
+                DebugManager.doAudit("Service Point id: " + id);
+                servPt.setIdServicePoint(id);
+                DebugManager.doAudit("Serv Prov addWorkPlace: idCity = "
+                        + idCity + ": batch query = " + query);
+
+
+
+                query = "insert into ServProvHasServPt (" + s.members()
+                        + ", servProvPhone, idServicePoint) values("
+                        + DBUtil.getPlaceHolder(s.memberCount(), "?") + ",?,?)";
+                DebugManager.doAudit("Serv Prov addWorkPlace: query = " + query );
+                int id = run.insertBatch(
+                        query,
+                        rsh,
+                        new Object[][] { s.memberValues(new String[] {
+                                serviceProvider.getSignInData().getPhone(),
+                                "" + servPt.getIdServicePoint() }) });
+                DebugManager.doAudit("ServProvHasServPt id: " + id);
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+            return Action.ERROR;
+        }
+        return Action.SUCCESS;
+    }
 }
