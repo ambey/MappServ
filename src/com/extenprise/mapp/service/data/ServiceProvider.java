@@ -150,6 +150,11 @@ public class ServiceProvider implements Serializable {
 				+ ", subscribed, subsDate";
 	}
 
+	public String updateMembers() {
+		return "fName=?, lName=?, emailId=?, gender=?, qualification=?, regNo=?"
+				+ ", subscribed=?, subsDate=?";
+	}
+
 	public Object[] memberValues(String extraValue) {
 		int count = memberCount();
 		if (extraValue != null) {
@@ -170,6 +175,28 @@ public class ServiceProvider implements Serializable {
 		if (extraValue != null) {
 			values[i++] = extraValue;
 		}
+		return values;
+	}
+
+	public Object[] updateMemberValues(String extraValue) {
+		int count = memberCount();
+		if (extraValue != null) {
+			count++;
+		}
+		Object[] values = new Object[count];
+		int i = 0;
+		values[i++] = fName;
+		values[i++] = lName;
+		values[i++] = emailId;
+		values[i++] = gender;
+		values[i++] = qualification;
+		values[i++] = regNo;
+		values[i++] = "" + subscribed;
+		values[i++] = subsDate;
+		if (extraValue != null) {
+			values[i++] = extraValue;
+		}
+		values[i++] = signInData.getPhone();
 		return values;
 	}
 

@@ -51,6 +51,11 @@ public class Customer implements Serializable {
 				+ ", weight, height";
 	}
 
+	public String updateMembers() {
+		return "fName=?, lName=?, emailId=?, gender=?, dob=?, location=?, pincode=?"
+				+ ", weight=?, height=?, idCity=?";
+	}
+
 	public Object[] memberValues(String extraValue) {
 		int count = memberCount();
 		if(extraValue != null) {
@@ -73,6 +78,30 @@ public class Customer implements Serializable {
 		if(extraValue != null) {
 			values[i++] = extraValue;
 		}
+		return values;
+	}
+
+	public Object[] updateMemberValues(String extraValue) {
+		int count = memberCount();
+		if(extraValue != null) {
+			count++;
+		}
+		Object[] values = new Object[count];
+		int i = 0;
+		values[i++] = fName;
+		values[i++] = lName;
+		values[i++] = emailId;
+		values[i++] = gender;
+		values[i++] = dob;
+		values[i++] = location;
+		values[i++] = pincode;
+		values[i++] = "" + weight;
+		values[i++] = "" + height;
+		if(extraValue != null) {
+			values[i++] = extraValue;
+		}
+		values[i++] = phone;
+
 		return values;
 	}
 
