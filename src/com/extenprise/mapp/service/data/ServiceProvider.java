@@ -151,8 +151,7 @@ public class ServiceProvider implements Serializable {
 	}
 
 	public String updateMembers() {
-		return "fName=?, lName=?, emailId=?, gender=?, qualification=?, regNo=?"
-				+ ", subscribed=?, subsDate=?";
+		return "fName=?, lName=?, emailId=?, gender=?, regNo=?";
 	}
 
 	public Object[] memberValues(String extraValue) {
@@ -189,10 +188,8 @@ public class ServiceProvider implements Serializable {
 		values[i++] = lName;
 		values[i++] = emailId;
 		values[i++] = gender;
-		values[i++] = qualification;
 		values[i++] = regNo;
-		values[i++] = "" + subscribed;
-		values[i++] = subsDate;
+
 		if (extraValue != null) {
 			values[i++] = extraValue;
 		}

@@ -42,13 +42,30 @@ public class SignUpAction {
                     + " where phone = ? ";
             DebugManager.doAudit("ServiceProvider UpdateAction: query = " + query);
             run.batch(query,
-                    new Object[][] { serviceProvider.memberValues(null) });
+                    new Object[][] { serviceProvider.updateMemberValues(null) });
 
         } catch (Exception x) {
             x.printStackTrace();
             return Action.ERROR;
         }
         return Action.SUCCESS;
+    }
+
+    public String isRegNoExists() {
+        try {
+            DebugManager.doAudit("Registration Number Exists Check: RegNo = "
+                    + serviceProvider.getRegNo());
+            if (!DBUtil.isValueFound("ServiceProvider", "regNo",
+                    serviceProvider.getRegNo())) {
+                DebugManager.doAudit("The registration number is not registered with us");
+                return Action.SUCCESS;
+            }
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Action.ERROR;
     }
 
     public String addWorkPlace() {
@@ -65,6 +82,10 @@ public class SignUpAction {
 
                 run.batch("insert into Service values(?)", s.getService());
 
+                run.batch("update ServiceProvider set qualification = ? where phone = ?",
+                        serviceProvider.getQualification(),
+                        serviceProvider.getSignInData().getPhone());
+
                 ServicePoint servPt = s.getServicePoint();
 
                 City city = servPt.getCity();
@@ -72,6 +93,18 @@ public class SignUpAction {
                 int idCity = run.query(query, rsh, city.getCity(),
                         city.getState(), city.getCountry());
                 city.setIdCity(idCity);
+
+
+
+
+//TODO
+
+
+
+
+
+
+
                 int idServPt = DBUtil.getServicePointId(servPt.getName(),
                         servPt.getLocation(), servPt.getCity().getIdCity());
                 if(idServPt != -1) {
@@ -90,6 +123,8 @@ public class SignUpAction {
                                 + servPt.getCity().getIdCity()) });
                 DebugManager.doAudit("Service Point id: " + id);
                 servPt.setIdServicePoint(id);
+
+
                 DebugManager.doAudit("Serv Prov addWorkPlace: idCity = "
                         + idCity + ": batch query = " + query);
 
