@@ -156,6 +156,7 @@ public class ServProvHasServPt implements Serializable {
 	}
 
 	public Object[] memberValues(String[] extraValues) {
+
 		int count = memberCount();
 		if (extraValues != null) {
 			count += extraValues.length;
