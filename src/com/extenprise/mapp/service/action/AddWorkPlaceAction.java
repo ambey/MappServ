@@ -1,7 +1,16 @@
 package com.extenprise.mapp.service.action;
 
 import java.util.ArrayList;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+
+import com.extenprise.mapp.data.City;
 import com.extenprise.mapp.form.WorkPlace;
+import com.extenprise.mapp.service.data.ServicePoint;
+import com.extenprise.mapp.util.DBManager;
+import com.extenprise.mapp.util.DBUtil;
+import com.extenprise.mapp.util.DebugManager;
 import com.opensymphony.xwork2.Action;
 
 public class AddWorkPlaceAction {
@@ -29,67 +38,44 @@ public class AddWorkPlaceAction {
             String query = "";
 
             run.batch("update ServiceProvider set qualification = ? where phone = ?",
-                        serviceProvider.getQualification(),
-                        serviceProvider.getSignInData().getPhone());
+                    new Object[][] {new Object[]{form.getQualification()},
+                            new Object[]{form.getSignInData().getPhone()}});
 
-            ServicePoint servPt = new ServicePoint();
+            ServicePoint servPt = form.getServicePoint();
 
+            City city = servPt.getCity();
+            query = "select idCity from City where city=? and state=? and country=?";
+            int idCity = run.query(query, rsh, city.getCity(),
+                    city.getState(), city.getCountry());
+            city.setIdCity(idCity);
 
-                City city = servPt.getCity();
-                query = "select idCity from City where city=? and state=? and country=?";
-                int idCity = run.query(query, rsh, city.getCity(),
-                        city.getState(), city.getCountry());
-                city.setIdCity(idCity);
+            int idServPt = DBUtil.getServicePointId(servPt.getName(),
+                    servPt.getLocation(), servPt.getCity().getIdCity());
+            if(idServPt != -1) {
+                servPt.setIdServicePoint(idServPt);
+            }
 
-
-
-
-
-
-//TODO
-
-
-
-
-
-
-
-                int idServPt = DBUtil.getServicePointId(servPt.getName(),
-                        servPt.getLocation(), servPt.getCity().getIdCity());
-                if(idServPt != -1) {
-                    servPt.setIdServicePoint(idServPt);
-                    continue;
-                }
-                query = "insert into ServicePoint (" + servPt.members()
-                        + ", idCity) " + "values("
-                        + DBUtil.getPlaceHolder(servPt.memberCount(), "?")
-                        + ",?)";
-                DebugManager.doAudit("Serv Prov addWorkPlace: query = " + query);
-                int id = run.insertBatch(
-                        query,
-                        rsh,
-                        new Object[][] { servPt.memberValues(""
-                                + servPt.getCity().getIdCity()) });
-                DebugManager.doAudit("Service Point id: " + id);
-                servPt.setIdServicePoint(id);
-
-
-                DebugManager.doAudit("Serv Prov addWorkPlace: idCity = "
-                        + idCity + ": batch query = " + query);
+            query = "update ServicePoint set" + servPt.updateMembers()
+                    + ", idCity = ? ";
+            run.batch(
+                    query,
+                    new Object[][]{servPt.memberValues(""
+                            + servPt.getCity().getIdCity())});
+            DebugManager.doAudit("Serv Prov addWorkPlace: idCity = "
+                    + idCity + ": batch query = " + query);
 
 
 
-                query = "insert into ServProvHasServPt (" + s.members()
+                /*query = "insert into ServProvHasServPt (" + s.members()
                         + ", servProvPhone, idServicePoint) values("
-                        + DBUtil.getPlaceHolder(s.memberCount(), "?") + ",?,?)";
-                DebugManager.doAudit("Serv Prov addWorkPlace: query = " + query );
-                int id = run.insertBatch(
+                        + DBUtil.getPlaceHolder(s.memberCount(), "?") + ",?,?)";*/
+            DebugManager.doAudit("Serv Prov addWorkPlace: query = " + query );
+                /*run.batch(
                         query,
-                        rsh,
                         new Object[][] { s.memberValues(new String[] {
-                                serviceProvider.getSignInData().getPhone(),
-                                "" + servPt.getIdServicePoint() }) });
-                DebugManager.doAudit("ServProvHasServPt id: " + id);
+                                form.getSignInData().getPhone(),
+                                "" + servPt.getIdServicePoint() }) });*/
+            // DebugManager.doAudit("ServProvHasServPt id: " + id);
 
         } catch (Exception x) {
             x.printStackTrace();

@@ -7,7 +7,7 @@ import com.extenprise.mapp.data.City;
 
 public class ServicePoint implements Serializable, Comparable<ServicePoint> {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private int idServicePoint;
@@ -120,6 +120,10 @@ public class ServicePoint implements Serializable, Comparable<ServicePoint> {
 
 	public String members() {
 		return "name, location, phone, emailId, altPhone";
+	}
+
+	public String updateMembers() {
+		return "name=?, location=?, phone=?, emailId=?, altPhone=?";
 	}
 
 	public Object[] memberValues(String extraValue) {

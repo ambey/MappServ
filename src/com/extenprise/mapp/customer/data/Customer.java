@@ -100,7 +100,7 @@ public class Customer implements Serializable {
 		if(extraValue != null) {
 			values[i++] = extraValue;
 		}
-		values[i++] = phone;
+		values[i++] = signInData.getPhone();
 
 		return values;
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.naming.NamingException;
+
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 
@@ -17,10 +19,10 @@ import com.extenprise.mapp.util.DBUtil;
 import com.extenprise.mapp.util.DebugManager;
 import com.opensymphony.xwork2.Action;
 
-public class SignUpAction {
+public class UpdateAction {
     private ServiceProvider serviceProvider;
 
-    public SignUpAction() {
+    public UpdateAction() {
         serviceProvider = new ServiceProvider();
     }
 

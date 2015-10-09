@@ -3,6 +3,11 @@ package com.extenprise.mapp.form;
 import java.lang.Override;
 import java.lang.String;
 
+import com.extenprise.mapp.data.City;
+import com.extenprise.mapp.data.SignInData;
+import com.extenprise.mapp.service.data.ServProvHasServPt;
+import com.extenprise.mapp.service.data.ServicePoint;
+
 /**
  * Created by avinash on 4/10/15.
  */
@@ -15,7 +20,7 @@ public class WorkPlace {
     private String phone;
     private String altPhone;
     private String emailId;
-    private String city;
+    private City city;
     private String servPointType;
     private String servCatagory;
     private String speciality;
@@ -64,6 +69,26 @@ public class WorkPlace {
         ServicePoint spt = new ServicePoint();
         spt.setName(name);
         spt.setLocation(location);
+        spt.setAltPhone(altPhone);
+        spt.setCity(city);
+        spt.setEmailId(emailId);
+        spt.setPhone(phone);
+        spt.setPincode(pincode);
+
+        return spt;
+    }
+
+    public ServProvHasServPt getServProvHasServPt() {
+        ServProvHasServPt spspt = new ServProvHasServPt();
+        spspt.setConsultFee(consultFee);
+        spspt.setEndTime(endTime);
+        spspt.setStartTime(startTime);
+        spspt.setWorkingDays(workingDays);
+        spspt.setServPointType(servPointType);
+        spspt.setExperience(experience);
+
+
+        return spspt;
     }
 
     public String getName() {
@@ -186,11 +211,11 @@ public class WorkPlace {
         this.endTime = endTime;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 }

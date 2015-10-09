@@ -70,14 +70,13 @@ public class SignUpAction {
 						+ DBUtil.getPlaceHolder(servPt.memberCount(), "?")
 						+ ",?)";
 				DebugManager.doAudit("Customer SignUpAction: query = " + query);
-				int id = run.insertBatch(
+				run.batch(
 						query,
-						rsh,
 						new Object[][] { servPt.memberValues(""
 								+ servPt.getCity().getIdCity()) });
-				DebugManager.doAudit("Service Point id: " + id);
-				servPt.setIdServicePoint(id);
-				DebugManager.doAudit("Customer SignUpAction: idCity = "
+				//DebugManager.doAudit("Service Point id: " + id);
+				//servPt.setIdServicePoint(id);
+				DebugManager.doAudit("Service Provider SignUpAction: idCity = "
 						+ idCity + ": batch query = " + query);
 			}
 			String[][] servNames = new String[serviceNames.size()][1];
@@ -100,14 +99,13 @@ public class SignUpAction {
 						+ ", servProv phone = "
 						+ serviceProvider.getSignInData().getPhone()
 						+ ", servPoint id = " + servPt.getIdServicePoint());
-				int id = run.insertBatch(
+				run.batch(
 						query,
-						rsh,
 						new Object[][] { s.memberValues(new String[] {
 								serviceProvider.getSignInData().getPhone(),
 								"" + servPt.getIdServicePoint() }) });
-				DebugManager.doAudit("ServProvHasServPt id: " + id);
-				s.setIdServProvHasServPt(id);
+				//DebugManager.doAudit("ServProvHasServPt id: " + id);
+				//s.setIdServProvHasServPt(id);
 			}
 		} catch (Exception x) {
 			x.printStackTrace();
